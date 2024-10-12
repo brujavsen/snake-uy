@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameTimers {
-    private Timer bossAttackTimer; // Temporizador para ataques del jefe
     private Timer gameTimer;
     private Timer respawnTimer;
     private Timer impulsoVelTimer;
@@ -54,8 +53,9 @@ public class GameTimers {
                     }
                 }
                 if(snakeMovement.getHeadPosition().equals(new Point(hoyoNegro.getHoyoX(), hoyoNegro.getHoyoY()))) {
-            		snakeMovement.removeSnakeBody();
-                	
+                	if(snakeMovement.tamanioSnake() != 1) {
+                		snakeMovement.removeSnakeBody();
+                	}
                 }
 
                 gameBoard.repaint();

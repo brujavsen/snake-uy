@@ -20,7 +20,7 @@ public class GameBoardSnake extends JPanel {
     
     private int width = 600;
 	private int height = 600;
-    private int cellSize = 30;
+    //private int cellSize = 30;
     
     private boolean juegoPausado = false;
     
@@ -52,7 +52,7 @@ public class GameBoardSnake extends JPanel {
             new ImageIcon(getClass().getResource("bg-tiburon.png")),
             new ImageIcon(getClass().getResource("bg-gallina.png")),
             new ImageIcon(getClass().getResource("bg-mosca.png")),
-            new ImageIcon(getClass().getResource("bg-mosca.png"))
+            new ImageIcon(getClass().getResource("bg-carpincho.png"))
         };
     }
     

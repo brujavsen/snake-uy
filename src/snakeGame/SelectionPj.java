@@ -41,7 +41,9 @@ public class SelectionPj extends JPanel {
 
         // Panel para las imágenes y botones
         JPanel mainSelectPanel = new JPanel() {
-            @Override
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (bgImage != null) {
@@ -56,8 +58,8 @@ public class SelectionPj extends JPanel {
         mainSelectPanel.add(rigidArea_1);
         
         JLabel tituloPj = new JLabel("Personajes");
-        tituloPj.setForeground(new Color(0, 0, 0));
-        tituloPj.setFont(new Font("Lato", Font.BOLD | Font.ITALIC, 29));
+        tituloPj.setForeground(new Color(255, 255, 255));
+        tituloPj.setFont(new Font("Power Red and Blue", Font.BOLD, 29));
         tituloPj.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainSelectPanel.add(tituloPj);
 
@@ -67,6 +69,7 @@ public class SelectionPj extends JPanel {
 
         // Mensaje personaje seleccionado
         msgLabel = new JLabel("");
+        msgLabel.setForeground(new Color(255, 255, 255));
         msgLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
         msgLabel.setFont(new Font("Power Red and Blue", Font.PLAIN, 20));
@@ -78,7 +81,7 @@ public class SelectionPj extends JPanel {
 
         buttons = new CharacterSelection[]{
             new CharacterSelection(AnimalCharacter.SERPIENTE, "Felipe", new ImageIcon(getClass().getResource("serpientearriba.png")), msgLabel),
-            new CharacterSelection(AnimalCharacter.CARPINCHO, "Joaco", new ImageIcon(getClass().getResource("carpinchoabajo.png")), msgLabel),
+            new CharacterSelection(AnimalCharacter.CARPINCHO, "Joako", new ImageIcon(getClass().getResource("carpinchoabajo.png")), msgLabel),
             new CharacterSelection(AnimalCharacter.TIBURON, "Tibu", new ImageIcon(getClass().getResource("tiburonder.png")), msgLabel),
             new CharacterSelection(AnimalCharacter.GALLINA, "Kopeti", new ImageIcon(getClass().getResource("gallinaabajo.png")), msgLabel),
             new CharacterSelection(AnimalCharacter.MOSCA, "Moska", new ImageIcon(getClass().getResource("moskaabajo.png")), msgLabel)

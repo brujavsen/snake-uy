@@ -55,7 +55,6 @@ public class GameFrame extends JFrame {
         setSize(width, height);
         setLocationRelativeTo(null);
         setResizable(false);
-        setUndecorated(true); // Quitar decoraciones de la ventana
 
         ImageIcon icon = new ImageIcon(getClass().getResource("serpientearriba.png"));
         setIconImage(icon.getImage());
@@ -67,7 +66,9 @@ public class GameFrame extends JFrame {
         contentPane.setLayout(cardLayout);
 
         JPanel mainMenuPanel = new JPanel() {
-            @Override
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (bgImage != null) {
@@ -80,11 +81,13 @@ public class GameFrame extends JFrame {
 
         //Version label
         lblNewLabel = new JLabel("Ver. 0.70");
+        lblNewLabel.setForeground(new Color(255, 255, 255));
         lblNewLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainMenuPanel.add(lblNewLabel, BorderLayout.NORTH);
 
         //Panel de botones
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setForeground(Color.DARK_GRAY);
         buttonPanel.setBackground(new Color(255, 255, 255));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
@@ -93,10 +96,11 @@ public class GameFrame extends JFrame {
 
         // Título
         titleGame = new JLabel("Animal Snake");
-        titleGame.setForeground(new Color(0, 100, 0));
-        titleGame.setHorizontalAlignment(SwingConstants.CENTER);
-        titleGame.setFont(new Font("Power Red and Blue", Font.BOLD, 60));
+        titleGame.setBackground(new Color(255, 255, 255));
         titleGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleGame.setForeground(new Color(255, 255, 255));
+        titleGame.setHorizontalAlignment(SwingConstants.CENTER);
+        titleGame.setFont(new Font("Power Clear", Font.BOLD, 60));
         buttonPanel.add(titleGame);
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
 
@@ -129,6 +133,7 @@ public class GameFrame extends JFrame {
         menuHelpBtn.addActionListener(e -> {
         	cardLayout.show(contentPane, "helpPanel");
             HelpPanel helpPanel = (HelpPanel) contentPane.getComponent(4); // Índice correcto del panel de selección
+            helpPanel.requestFocusInWindow(); // Solicitar foco al panel de selección
         });
 
         // Salir juego btn

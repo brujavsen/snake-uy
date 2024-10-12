@@ -2,8 +2,6 @@ package snakeGame;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class GameOverPanel extends JPanel {
     private static final long serialVersionUID = 1L;

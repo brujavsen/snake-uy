@@ -42,7 +42,10 @@ public class HelpPanel extends JPanel {
 
         // Panel para las imágenes
         JPanel mainHelpPanel = new JPanel() {
-            @Override
+
+			private static final long serialVersionUID = 1L;
+
+			@Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (bgImage != null) {
@@ -61,8 +64,8 @@ public class HelpPanel extends JPanel {
         mainHelpPanel.add(rigidArea_8);
         
         JLabel tituloLabel = new JLabel("Cómo Jugar");
-        tituloLabel.setForeground(new Color(0, 128, 64));
-        tituloLabel.setFont(new Font("Lato", Font.BOLD | Font.ITALIC, 30));
+        tituloLabel.setForeground(new Color(255, 255, 255));
+        tituloLabel.setFont(new Font("Power Red and Blue", Font.BOLD | Font.ITALIC, 30));
         tituloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(tituloLabel);
         
@@ -77,6 +80,7 @@ public class HelpPanel extends JPanel {
         mainHelpPanel.add(rigidArea_1);
         
         JLabel hoyoLabel = new JLabel(helpTexts[0]);
+        hoyoLabel.setForeground(new Color(255, 255, 255));
         hoyoLabel.setFont(new Font("Lato", Font.BOLD, 17));
         hoyoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(hoyoLabel);
@@ -92,6 +96,7 @@ public class HelpPanel extends JPanel {
         mainHelpPanel.add(rigidArea_3);
         
         JLabel lblNewLabel = new JLabel(helpTexts[1]);
+        lblNewLabel.setForeground(new Color(255, 255, 255));
         lblNewLabel.setFont(new Font("Lato", Font.BOLD, 17));
         lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(lblNewLabel);
@@ -107,6 +112,7 @@ public class HelpPanel extends JPanel {
         mainHelpPanel.add(rigidArea_5);
         
         JLabel lblNewLabel_2 = new JLabel(helpTexts[2]);
+        lblNewLabel_2.setForeground(new Color(255, 255, 255));
         lblNewLabel_2.setFont(new Font("Lato", Font.BOLD, 17));
         lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(lblNewLabel_2);

@@ -1,9 +1,7 @@
 package snakeGame;
 
-import java.awt.CardLayout;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +24,6 @@ public class SnakeMovement {
     private boolean growNext = false;
     private boolean gameOver = false; // Nuevo estado para verificar si el juego ha terminado
     
-    private Boss jefe;
-    
     //Personajes
     public enum AnimalCharacter {
         SERPIENTE,
@@ -42,7 +38,6 @@ public class SnakeMovement {
     }
 
     public SnakeMovement(AnimalCharacter personajeSeleccionado) {
-    	jefe = new Boss();
         //System.out.println(personajeSeleccionado);
     	if (personajeSeleccionado == null) {
             throw new IllegalStateException("No hay un personaje seleccionado.");
@@ -68,7 +63,7 @@ public class SnakeMovement {
 	            imgAbajo = new ImageIcon(getClass().getResource("tiburonarriba.png"));
 	            imgArriba = new ImageIcon(getClass().getResource("tiburonabajo.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("tiburonizq.png"));
-	            cuerpo = new ImageIcon(getClass().getResource("ricardito.png"));
+	            cuerpo = new ImageIcon(getClass().getResource("pezmuerto.png"));
 	            break;
 	        case GALLINA:
 	            imgDerecha = new ImageIcon(getClass().getResource("gallinader.png"));
@@ -82,7 +77,7 @@ public class SnakeMovement {
 	            imgAbajo = new ImageIcon(getClass().getResource("moskaabajo.png"));
 	            imgArriba = new ImageIcon(getClass().getResource("moskaarriba.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("moskaizq.png"));
-	            cuerpo = new ImageIcon(getClass().getResource("ricardito.png"));
+	            cuerpo = new ImageIcon(getClass().getResource("vomito.png"));
 	            break;
 	         default:
 	        	 System.out.print("No existe");
@@ -94,10 +89,6 @@ public class SnakeMovement {
 
         snakeBody = new ArrayList<>();
         snakeBody.add(new Point(0, 0));
-        
-        GameOverPanel gameOverPanel = new GameOverPanel(null, null);
-    	
-        new HoyoNegro();
     }
 
     public void setDirection(Direction direction) {
