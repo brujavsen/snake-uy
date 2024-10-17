@@ -70,7 +70,7 @@ public class GameTimers {
                     }
                 }
                 
-            	if (mateArg != null && !mateArg.isActivo()) { // Solo actualiza la posición si no ha sido recolectado
+            	if (mateArg != null) { // Solo actualiza la posición si no ha sido recolectado
                     mateArg.updateMate();
                     desactivarImpulsoVelocidad(); // Desactivar el impulso
                 }

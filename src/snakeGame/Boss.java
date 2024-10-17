@@ -1,26 +1,28 @@
 package snakeGame;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import javax.swing.ImageIcon;
+
 public class Boss {
     public int health = 100;
     private Point position;
-    private int width = 30;
-    private int height = 30;
+    private int width = 50;
+    private int height = 50;
     private boolean alive;
+    private ImageIcon bossImg;
 
     public Boss() {
         this.position = new Point(270, 270); // Posición inicial
         this.alive = true;
+        bossImg = new ImageIcon(getClass().getResource("termoabajo.png"));
     }
 
     public void dibujar(Graphics g) {
         if (alive) {
-            g.setColor(Color.RED);
-            g.fillRect(position.x, position.y, width, height);
+        	g.drawImage(bossImg.getImage(), position.x, position.y, width, height, null);
         }
     }
 

@@ -1,10 +1,9 @@
 package snakeGame;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
-//import javax.swing.ImageIcon;
+import javax.swing.ImageIcon;
 
 public class Bombs {
 	private int width = 600;
@@ -12,12 +11,12 @@ public class Bombs {
 	private static final int PIXEL_SIZE = 30;
 	private int bombX;
     private int bombY;
-    //public ImageIcon bombImage;
+    public ImageIcon bombImage;
 	private Random random;
 	private boolean[][] grid = new boolean[width][height];
 	
 	public Bombs() {
-		//bombImage = new ImageIcon(getClass().getResource("bomb.gif"));
+		bombImage = new ImageIcon(getClass().getResource("caldera.png"));
         random = new Random();
         placeBomb();
     }
@@ -33,8 +32,7 @@ public class Bombs {
 	}
 
     public void drawBomb(Graphics g) {
-    	g.setColor(Color.YELLOW);
-        g.fillRect(bombX, bombY, PIXEL_SIZE, PIXEL_SIZE);
+    	g.drawImage(bombImage.getImage(), bombX, bombY, PIXEL_SIZE, PIXEL_SIZE, null);
     }
     
     public int getBombX() {
