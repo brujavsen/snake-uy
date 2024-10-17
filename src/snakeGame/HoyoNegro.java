@@ -7,17 +7,17 @@ import javax.swing.ImageIcon;
 
 public class HoyoNegro {
 	private int width = 600;
-	private int heigth = 600;
+	private int height = 600;
 	private static final int PIXEL_SIZE = 30;
 	private int hoyoX;
     private int hoyoY;
 	public ImageIcon hoyo;
 	private Random random;
-	private boolean[][] grid = new boolean[width][heigth];
+	private boolean[][] grid = new boolean[width][height];
 	
 	public HoyoNegro() {
         // Cargar la imagen del hoyo
-		hoyo = new ImageIcon(getClass().getResource("hoyo.png"));
+		hoyo = new ImageIcon(getClass().getResource("hoyo.gif"));
         random = new Random();
         placeHoyo(); // Inicializar la posición del hoyo
     }
@@ -26,7 +26,7 @@ public class HoyoNegro {
 		int x, y;
         do {
             x = random.nextInt(width / PIXEL_SIZE) * PIXEL_SIZE;
-            y = random.nextInt(heigth / PIXEL_SIZE) * PIXEL_SIZE;
+            y = random.nextInt(height / PIXEL_SIZE) * PIXEL_SIZE;
         } while (grid[x][y]); // Asegurar que sea una casilla vacía
 	    hoyoX = x;
 	    hoyoY = y;

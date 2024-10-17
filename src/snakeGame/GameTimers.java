@@ -26,12 +26,13 @@ public class GameTimers {
         this.mateArg = mateArg;
         this.hoyoNegro = hoyoNegro;
         this.gameBoard = gameBoardSnake;
+        
         setupTimers();
     	musicPlayer = new MusicPlayer();
     }
     
     private void setupTimers() {
-        gameTimer = new Timer(100, new ActionListener() {
+        gameTimer = new Timer(110, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (snakeMovement.isGameOver()) {
@@ -39,16 +40,15 @@ public class GameTimers {
                     return;
                 }
 
-                snakeMovement.moveSnake(gameBoard);
+                snakeMovement.moveSnake(gameBoard, null);
+                
                 if (snakeMovement.getHeadPosition().equals(new Point(mateNormal.getMateX(), mateNormal.getMateY()))) {
                     snakeMovement.grow();
-                    musicPlayer.playOneTimeMusic("snakeGame/musica/eat.wav");
                     mateNormal.updateMate();
                 }
                 if (snakeMovement.getHeadPosition().equals(new Point(mateArg.getMateX(), mateArg.getMateY()))) {
                     if (!impulsoActivo) {
                         mateArg.setActivo(false); // Marca el mateArg como no activo
-                        musicPlayer.playOneTimeMusic("snakeGame/musica/run.wav");
                         activarImpulsoVelocidad();
                     }
                 }
@@ -57,12 +57,11 @@ public class GameTimers {
                 		snakeMovement.removeSnakeBody();
                 	}
                 }
-
                 gameBoard.repaint();
             }
         });
 
-        respawnTimer = new Timer(6000, new ActionListener() {
+        respawnTimer = new Timer(3000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (hoyoNegro != null && hoyoNegro.hoyo != null) {
@@ -86,19 +85,19 @@ public class GameTimers {
             
             switch(SelectionPj.obtenerPersonajeSeleccionado()) {
             	case SERPIENTE:
-            		musicPlayer.playMusic("snakeGame/musica/serpiente.WAV");
+            		musicPlayer.playMusic("serpiente.WAV");
             		break;
             	case CARPINCHO:
-	            	musicPlayer.playMusic("snakeGame/musica/carpincho.WAV");
+	            	musicPlayer.playMusic("carpincho.WAV");
 	            	break;
 	            case TIBURON:
-	            	musicPlayer.playMusic("snakeGame/musica/tiburon.WAV");
+	            	musicPlayer.playMusic("tiburon.WAV");
 	            	break;
 	            case GALLINA:
-	            	musicPlayer.playMusic("snakeGame/musica/gallina.WAV");
+	            	musicPlayer.playMusic("gallina.WAV");
 	            	break;
 	            case MOSCA:
-	            	musicPlayer.playMusic("snakeGame/musica/mosca.WAV");
+	            	musicPlayer.playMusic("mosca.WAV");
 	            	break;
 				default:
 					System.out.println("Error, animal no encontrado");

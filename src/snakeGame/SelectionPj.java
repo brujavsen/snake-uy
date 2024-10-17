@@ -15,6 +15,7 @@ public class SelectionPj extends JPanel {
     private static final long serialVersionUID = 1L;
     private JLabel msgLabel;
     private ImageIcon bgImage;
+    private JPanel contentPane;
 
     public static AnimalCharacter personajeSeleccionado; // Variable estática
     private CharacterSelection[] buttons; // Array para los botones
@@ -36,6 +37,7 @@ public class SelectionPj extends JPanel {
         setSize(600, 600);
         setLayout(new BorderLayout(0, 0));
         bgImage = new ImageIcon(getClass().getResource("selection-bg.png"));
+        this.contentPane = contentPane;
 
         setPersonajeSeleccionado(defaultCharacter); // Establecer el personaje por defecto
 
@@ -131,6 +133,12 @@ public class SelectionPj extends JPanel {
                     highlightCurrentButton();
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     buttons[currentButtonIndex].doClick(); // Simula un clic en el botón actual
+                } else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                	CardLayout layout = (CardLayout) contentPane.getLayout();
+                    layout.show(contentPane, "mainMenu");
+
+                    GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
+                    gameBoard.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
                 }
             }
         });

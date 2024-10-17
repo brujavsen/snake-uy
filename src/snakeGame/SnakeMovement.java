@@ -21,6 +21,8 @@ public class SnakeMovement {
     private ImageIcon cuerpo;
     private ImageIcon actualDireccionImagen;
     
+    private int vidas = 4;
+    
     private boolean growNext = false;
     private boolean gameOver = false; // Nuevo estado para verificar si el juego ha terminado
     
@@ -56,14 +58,14 @@ public class SnakeMovement {
 	            imgAbajo = new ImageIcon(getClass().getResource("serpientearriba.png"));
 	            imgArriba = new ImageIcon(getClass().getResource("serpienteabajo.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("serpienteizquierda.png"));
-	            cuerpo = new ImageIcon(getClass().getResource("serpientecuerpo.png"));
+	            cuerpo = new ImageIcon(getClass().getResource("serpientecuerpo.gif"));
 	            break;
 	        case TIBURON:
 	            imgDerecha = new ImageIcon(getClass().getResource("tiburonder.png"));
-	            imgAbajo = new ImageIcon(getClass().getResource("tiburonarriba.png"));
+	            imgAbajo = new ImageIcon(getClass().getResource("tiburonarriba.gif"));
 	            imgArriba = new ImageIcon(getClass().getResource("tiburonabajo.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("tiburonizq.png"));
-	            cuerpo = new ImageIcon(getClass().getResource("pezmuerto.png"));
+	            cuerpo = new ImageIcon(getClass().getResource("pezmuerto.gif"));
 	            break;
 	        case GALLINA:
 	            imgDerecha = new ImageIcon(getClass().getResource("gallinader.png"));
@@ -113,8 +115,8 @@ public class SnakeMovement {
         return direccionActual;
     }
 
-    public void moveSnake(GameBoardSnake gameBoard) {
-        if (gameOver) return; // No mover la serpiente si el juego ha terminado
+    public void moveSnake(GameBoardSnake gameBoard, GameBoardBoss gameBoardBoss) {
+        if (gameOver) return;
 
         Point head = snakeBody.get(0);
         Point newHead = (Point) head.clone();
@@ -136,14 +138,15 @@ public class SnakeMovement {
         if (growNext) {
             growNext = false;
         } else {
-            snakeBody.remove(snakeBody.size() - 1); //para que no se repita el cuerpo varias veces hasta que haya tomado un mate
+            snakeBody.remove(snakeBody.size() - 1);
         }
         
         if (checkCollisions()) {
-        	gameBoard.actualizarPuntaje(tamanioSnake());
-            gameOver = true; // Establecer el estado de fin de juego
+            gameOver = true;
         }
-
+        if (gameBoard instanceof GameBoardSnake gameBoardSnake) {
+        	gameBoardSnake.actualizarPuntaje(tamanioSnake());
+        }
     }
 
     public void drawSnake(Graphics g) {
@@ -200,6 +203,26 @@ public class SnakeMovement {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+    
+    public void perderVidas() {
+        if (vidas > 0) {
+            vidas--;
+            if (vidas > 0 && !snakeBody.isEmpty()) {
+                removeSnakeBody(); // Quitar una parte del cuerpo
+            }
+            if (vidas == 0) {
+                gameOver = true; // Game over si ya no quedan vidas
+            }
+        }
+    }
+
+    public int perderUnaVida() {
+    	return --vidas;
+    }
+    
+    public int getLives() {
+        return vidas;
     }
 
 }

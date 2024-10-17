@@ -6,14 +6,14 @@ import java.util.Random;
 
 public class Mate {
 	private int width = 600;
-	private int heigth = 600;
+	private int height = 600;
     private static final int PIXEL_SIZE = 30;
     private ImageIcon mateImage;
     private int mateX;
     private int mateY;
     private Random random;
     private boolean activo; // Estado del mate
-    private boolean[][] grid = new boolean[width][heigth];
+    private boolean[][] grid = new boolean[width][height];
 
     public Mate(String tipoMate) {
         // Cargar la imagen del mate
@@ -28,7 +28,7 @@ public class Mate {
         int x, y;
         do {
             x = random.nextInt(width / PIXEL_SIZE) * PIXEL_SIZE;
-            y = random.nextInt(heigth / PIXEL_SIZE) * PIXEL_SIZE;
+            y = random.nextInt(height / PIXEL_SIZE) * PIXEL_SIZE;
         } while (grid[x][y]); // Asegurar que sea una casilla vacía
         
         mateX = x;

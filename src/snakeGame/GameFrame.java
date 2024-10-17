@@ -29,8 +29,11 @@ public class GameFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private GameBoardSnake gameBoard;
+    private GameBoardBoss gameBoardBoss;
+    private GameOverPanel gameOverPanel;
     private SelectionPj selectionPj;
     private HelpPanel helpPanel;
+    private FinalPanel finalPanel;
     private JPanel contentPane;
     private CardLayout cardLayout;
 
@@ -80,7 +83,7 @@ public class GameFrame extends JFrame {
         mainMenuPanel.setLayout(new BorderLayout());
 
         //Version label
-        lblNewLabel = new JLabel("Ver. 0.70");
+        lblNewLabel = new JLabel("Ver. 0.90");
         lblNewLabel.setForeground(new Color(255, 255, 255));
         lblNewLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainMenuPanel.add(lblNewLabel, BorderLayout.NORTH);
@@ -96,8 +99,8 @@ public class GameFrame extends JFrame {
 
         // Título
         titleGame = new JLabel("Animal Snake");
-        titleGame.setBackground(new Color(255, 255, 255));
         titleGame.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleGame.setBackground(new Color(0, 128, 0));
         titleGame.setForeground(new Color(255, 255, 255));
         titleGame.setHorizontalAlignment(SwingConstants.CENTER);
         titleGame.setFont(new Font("Power Clear", Font.BOLD, 60));
@@ -163,15 +166,23 @@ public class GameFrame extends JFrame {
 
         gameBoard = new GameBoardSnake(cardLayout, contentPane);
         selectionPj = new SelectionPj(contentPane, null);
-        GameOverPanel gameOverPanel = new GameOverPanel(cardLayout, contentPane);
+        gameOverPanel = new GameOverPanel(cardLayout, contentPane);
         helpPanel = new HelpPanel(contentPane);
-
+        gameBoardBoss = new GameBoardBoss(cardLayout, contentPane);
+        finalPanel = new FinalPanel(contentPane);
+        
         contentPane.add(mainMenuPanel, "mainMenu");
         contentPane.add(gameBoard, "gameBoard");
         contentPane.add(gameOverPanel, "gameOverPanel");
         contentPane.add(selectionPj, "selectionPjMenu");
         contentPane.add(helpPanel, "helpPanel");
-
+        contentPane.add(gameBoardBoss, "gameBoardBoss");
+        contentPane.add(finalPanel, "finalPanel");
+        
+        /*Component[] components = contentPane.getComponents();
+    	for (int i = 0; i < components.length; i++) {
+    	    System.out.println("Index " + i + ": " + components[i].getClass().getName());
+    	}*/
 
         setContentPane(contentPane);
         pack();

@@ -2,16 +2,20 @@ package snakeGame;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GameOverPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private JLabel gameOverLabel;
     private JLabel puntajeLabel;
     private JButton restartButton;
-    
+    private JPanel contentPane;
+
     public GameOverPanel(CardLayout cardLayout, JPanel contentPane) {
         setLayout(new BorderLayout());
         setBackground(new Color(0, 0, 0, 0));
+        this.contentPane = contentPane;
         
         gameOverLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
         gameOverLabel.setForeground(Color.RED);
@@ -23,8 +27,7 @@ public class GameOverPanel extends JPanel {
         centerPanel.setLayout(new GridLayout(2, 1));
         centerPanel.add(gameOverLabel);
         
-
-    	puntajeLabel = new JLabel("", SwingConstants.CENTER);
+        puntajeLabel = new JLabel("", SwingConstants.CENTER);
         puntajeLabel.setForeground(Color.WHITE);
         puntajeLabel.setFont(new Font("Power Red and Blue", Font.BOLD, 30));
         centerPanel.add(puntajeLabel);
@@ -38,16 +41,31 @@ public class GameOverPanel extends JPanel {
         restartButton.addActionListener(e -> {
             CardLayout layout = (CardLayout) contentPane.getLayout();
             layout.show(contentPane, "mainMenu");
-
             GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
             gameBoard.reiniciarJuego();
         });
 
         add(restartButton, BorderLayout.SOUTH);
+        setupKeyListener();
     }
     
     public void actualizarPuntaje(int puntaje) {
         puntajeLabel.setText("Puntaje: " + puntaje);
     }
     
+    private void setupKeyListener() {
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                	CardLayout layout = (CardLayout) contentPane.getLayout();
+                    layout.show(contentPane, "mainMenu");
+
+                    GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
+                    gameBoard.reiniciarJuego();
+                }
+            }
+        });
+        setFocusable(true);
+    }
 }

@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,22 +24,26 @@ public class HelpPanel extends JPanel {
     private static final long serialVersionUID = 1L;
     private ImageIcon bgImage;
     private ImageIcon[] helpImages;
+    private JPanel contentPane;
     private String[] helpTexts = {
         "El hoyo negro te hara perder uno a uno los mates tomados",
         "El mate te hará crecer",
-        "El mate Argentino te dará velocidad"
+        "El mate Argentino te dará velocidad",
+        "Te mueves con las flechas de dirección o si prefieres 'AWSD'"
     };
 
     public HelpPanel(JPanel contentPane) {
         setSize(600, 600);
         setLayout(new BorderLayout(20, 20));
         bgImage = new ImageIcon(getClass().getResource("selection-bg.png"));
+        this.contentPane = contentPane;
         
         // Cargar imágenes de ayuda
         helpImages = new ImageIcon[]{
-            new ImageIcon(getClass().getResource("hoyo.png")),
+            new ImageIcon(getClass().getResource("hoyo.gif")),
             new ImageIcon(getClass().getResource("mt-mate.png")),
-            new ImageIcon(getClass().getResource("mateArg.png"))
+            new ImageIcon(getClass().getResource("mateArg.png")),
+            new ImageIcon(getClass().getResource("controles.png"))
         };
 
         // Panel para las imágenes
@@ -104,9 +110,9 @@ public class HelpPanel extends JPanel {
         Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
         mainHelpPanel.add(rigidArea_4);
         
-        JLabel lblNewLabel_1 = new JLabel(helpImages[2]);
-        lblNewLabel_1.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainHelpPanel.add(lblNewLabel_1);
+        JLabel imageLabel3 = new JLabel(helpImages[2]);
+        imageLabel3.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainHelpPanel.add(imageLabel3);
         
         Component rigidArea_5 = Box.createRigidArea(new Dimension(20, 20));
         mainHelpPanel.add(rigidArea_5);
@@ -116,6 +122,27 @@ public class HelpPanel extends JPanel {
         lblNewLabel_2.setFont(new Font("Lato", Font.BOLD, 17));
         lblNewLabel_2.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(lblNewLabel_2);
+        
+        Component rigidArea_6 = Box.createRigidArea(new Dimension(20, 20));
+        mainHelpPanel.add(rigidArea_6);
+        
+        JLabel controlesLabelImage = new JLabel(helpImages[3]);
+        controlesLabelImage.setForeground(new Color(255, 255, 255));
+        controlesLabelImage.setFont(new Font("Lato", Font.BOLD, 17));
+        controlesLabelImage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainHelpPanel.add(controlesLabelImage);
+        
+        Component rigidArea_9 = Box.createRigidArea(new Dimension(20, 20));
+        mainHelpPanel.add(rigidArea_9);
+        
+        JLabel controlesLabelText = new JLabel(helpTexts[3]);
+        controlesLabelText.setForeground(new Color(255, 255, 255));
+        controlesLabelText.setFont(new Font("Lato", Font.BOLD, 17));
+        controlesLabelText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainHelpPanel.add(controlesLabelText);
+        
+        Component rigidArea_7 = Box.createRigidArea(new Dimension(20, 20));
+        mainHelpPanel.add(rigidArea_7);
         
         // Botón para volver
         JButton exitBtn = new JButton("Volver al Menú");
@@ -129,17 +156,27 @@ public class HelpPanel extends JPanel {
             }
         });
         
-        Component rigidArea_6 = Box.createRigidArea(new Dimension(20, 20));
-        mainHelpPanel.add(rigidArea_6);
-        
-        Component rigidArea_7 = Box.createRigidArea(new Dimension(20, 20));
-        mainHelpPanel.add(rigidArea_7);
-        
-        
         exitBtn.setBackground(new Color(255, 150, 100));
         exitBtn.setForeground(new Color(0, 0, 0));
         exitBtn.setFont(new Font("Power Red and Blue", Font.PLAIN, 20));
         exitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainHelpPanel.add(exitBtn);
+        setupKeyListener();
+    }
+    
+    private void setupKeyListener() {
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                	CardLayout layout = (CardLayout) contentPane.getLayout();
+                    layout.show(contentPane, "mainMenu");
+
+                    GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
+                    gameBoard.reiniciarJuego();
+                }
+            }
+        });
+        setFocusable(true); // Permitir que el panel sea enfocado
     }
 }
