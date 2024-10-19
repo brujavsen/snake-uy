@@ -25,6 +25,7 @@ public class SnakeMovement {
     
     private boolean growNext = false;
     private boolean gameOver = false; // Nuevo estado para verificar si el juego ha terminado
+    private boolean hasMoved = true; //Cooldown de movimiento
     
     //Personajes
     public enum AnimalCharacter {
@@ -32,7 +33,8 @@ public class SnakeMovement {
         CARPINCHO,
         TIBURON,
         GALLINA,
-        MOSCA
+        MOSCA,
+        TERMO
     }
     
     public enum Direction {
@@ -58,11 +60,11 @@ public class SnakeMovement {
 	            imgAbajo = new ImageIcon(getClass().getResource("serpientearriba.png"));
 	            imgArriba = new ImageIcon(getClass().getResource("serpienteabajo.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("serpienteizquierda.png"));
-	            cuerpo = new ImageIcon(getClass().getResource("serpientecuerpo.gif"));
+	            cuerpo = new ImageIcon(getClass().getResource("serpientecuerpo.png"));
 	            break;
 	        case TIBURON:
 	            imgDerecha = new ImageIcon(getClass().getResource("tiburonder.png"));
-	            imgAbajo = new ImageIcon(getClass().getResource("tiburonarriba.gif"));
+	            imgAbajo = new ImageIcon(getClass().getResource("tiburonarriba.png"));
 	            imgArriba = new ImageIcon(getClass().getResource("tiburonabajo.png"));
 	            imgIzquierda = new ImageIcon(getClass().getResource("tiburonizq.png"));
 	            cuerpo = new ImageIcon(getClass().getResource("pezmuerto.gif"));
@@ -81,6 +83,13 @@ public class SnakeMovement {
 	            imgIzquierda = new ImageIcon(getClass().getResource("moskaizq.png"));
 	            cuerpo = new ImageIcon(getClass().getResource("vomito.png"));
 	            break;
+	        case TERMO:
+	            imgDerecha = new ImageIcon(getClass().getResource("termoder.png"));
+	            imgAbajo = new ImageIcon(getClass().getResource("termoabajo.png"));
+	            imgArriba = new ImageIcon(getClass().getResource("termoarriba.png"));
+	            imgIzquierda = new ImageIcon(getClass().getResource("termoizq.png"));
+	            cuerpo = new ImageIcon(getClass().getResource("caldera.png"));
+	            break;
 	         default:
 	        	 System.out.print("No existe");
 	        	 break;
@@ -92,22 +101,25 @@ public class SnakeMovement {
         snakeBody = new ArrayList<>();
         snakeBody.add(new Point(0, 0));
     }
-
+    
     public void setDirection(Direction direction) {
-        direccionActual = direction;
-        switch (direction) {
-            case LEFT:
-                actualDireccionImagen = imgIzquierda;
-                break;
-            case RIGHT:
-                actualDireccionImagen = imgDerecha;
-                break;
-            case DOWN:
-                actualDireccionImagen = imgAbajo;
-                break;
-            case UP:
-                actualDireccionImagen = imgArriba;
-                break;
+        if (hasMoved) {
+            direccionActual = direction;
+            hasMoved = false;  // Solo permitir cambiar dirección tras haber avanzado
+            switch (direction) {
+                case LEFT:
+                    actualDireccionImagen = imgIzquierda;
+                    break;
+                case RIGHT:
+                    actualDireccionImagen = imgDerecha;
+                    break;
+                case DOWN:
+                    actualDireccionImagen = imgAbajo;
+                    break;
+                case UP:
+                    actualDireccionImagen = imgArriba;
+                    break;
+            }
         }
     }
 
@@ -140,6 +152,8 @@ public class SnakeMovement {
         } else {
             snakeBody.remove(snakeBody.size() - 1);
         }
+        
+        hasMoved = true;
         
         if (checkCollisions()) {
             gameOver = true;

@@ -31,6 +31,7 @@ public class HelpPanel extends JPanel {
         "El mate Argentino te dará velocidad",
         "Te mueves con las flechas de dirección o si prefieres 'AWSD'"
     };
+    private JButton exitBtn; // Botón declarado como atributo de clase
 
     public HelpPanel(JPanel contentPane) {
         setSize(600, 600);
@@ -49,9 +50,9 @@ public class HelpPanel extends JPanel {
         // Panel para las imágenes
         JPanel mainHelpPanel = new JPanel() {
 
-			private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-			@Override
+            @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (bgImage != null) {
@@ -145,7 +146,7 @@ public class HelpPanel extends JPanel {
         mainHelpPanel.add(rigidArea_7);
         
         // Botón para volver
-        JButton exitBtn = new JButton("Volver al Menú");
+        exitBtn = new JButton("Volver al Menú"); // Asegúrate de que exitBtn sea accesible
         exitBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CardLayout layout = (CardLayout) contentPane.getLayout();
@@ -168,12 +169,15 @@ public class HelpPanel extends JPanel {
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                	CardLayout layout = (CardLayout) contentPane.getLayout();
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    CardLayout layout = (CardLayout) contentPane.getLayout();
                     layout.show(contentPane, "mainMenu");
 
                     GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
                     gameBoard.reiniciarJuego();
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    // Simular clic en el botón "Volver al Menú"
+                    exitBtn.doClick(); // Asegúrate de que exitBtn sea accesible aquí
                 }
             }
         });

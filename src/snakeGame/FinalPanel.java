@@ -44,7 +44,7 @@ public class FinalPanel extends JPanel {
         Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
         add(rigidArea_1);
         
-        JLabel textoFinal2 = new JLabel("Has desbloqueado el Jefe Final para jugar con él");
+        JLabel textoFinal2 = new JLabel("Gracias por haber jugado");
         textoFinal2.setFont(new Font("Lato", Font.BOLD | Font.ITALIC, 21));
         textoFinal2.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(textoFinal2);
@@ -60,9 +60,10 @@ public class FinalPanel extends JPanel {
         		CardLayout layout = (CardLayout) contentPane.getLayout();
                 layout.show(contentPane, "mainMenu");
 
-                GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
-                gameBoard.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
+                GameBoardWithBoss gameBoss = (GameBoardWithBoss) contentPane.getComponent(7);
+                gameBoss.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
                 detenerMusica();
+                repaint();
         	}
         });
         volverMenuBtn.setFont(new Font("Power Red and Blue", Font.PLAIN, 25));

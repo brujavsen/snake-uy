@@ -11,7 +11,7 @@ import javax.swing.Timer;
 
 public class GameTimersBoss {
 
-	private Timer gameTimer;
+	private Timer gameTimerBoss;
     private Timer respawnTimer;
     private SnakeMovement snakeMovement;
     private GameBoardBoss gameBoardBoss;
@@ -40,7 +40,7 @@ public class GameTimersBoss {
     }
     
 	private void setupTimers() {
-        gameTimer = new Timer(110, new ActionListener() {
+		gameTimerBoss = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (snakeMovement.isGameOver()) {
@@ -62,7 +62,7 @@ public class GameTimersBoss {
                 	}
                 	snakeMovement.perderUnaVida();
                 }
-                if(boss.health < 60) {
+                if(boss.vida < 60) {
                 	incremVelMitadVidaJefe();
                 }
                 if(snakeMovement.getLives() == 1) {
@@ -96,8 +96,8 @@ public class GameTimersBoss {
     }
 	
 	public void startGameTimer() {
-        if (gameTimer != null && !gameTimer.isRunning()) {
-            gameTimer.start();
+        if (gameTimerBoss != null && !gameTimerBoss.isRunning()) {
+        	gameTimerBoss.start();
             respawnTimer.start();
             
             switch(SelectionPj.obtenerPersonajeSeleccionado()) {
@@ -116,6 +116,9 @@ public class GameTimersBoss {
 	            case MOSCA:
 	            	musicPlayer.playMusic("finalboss.WAV");
 	            	break;
+	            case TERMO:
+	            	musicPlayer.playMusic("finalboss.WAV");
+	            	break;
 				default:
 					System.out.println("Error, animal no encontrado");
 					break;
@@ -125,21 +128,21 @@ public class GameTimersBoss {
     }
     
     public void stopGameTimer() {
-        if (gameTimer != null && gameTimer.isRunning()) {
-            gameTimer.stop();
+        if (gameTimerBoss != null && gameTimerBoss.isRunning()) {
+        	gameTimerBoss.stop();
             musicPlayer.stopMusic();
             respawnTimer.stop();
         }
     }
     
     public boolean isGameTimerRunning() {
-        return gameTimer.isRunning();
+        return gameTimerBoss.isRunning();
     }
     
     private void incremVelMitadVidaJefe() {
-        if (gameTimer.getDelay() != 50) {
-            gameTimer.setDelay(50);
-            respawnTimer.setDelay(900);
+        if (gameTimerBoss.getDelay() != 50) {
+        	gameTimerBoss.setDelay(50);
+            respawnTimer.setDelay(1200);
         }
     }
     

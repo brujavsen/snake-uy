@@ -29,6 +29,7 @@ public class GameFrame extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private GameBoardSnake gameBoard;
+    private GameBoardWithBoss gameBoss;
     private GameBoardBoss gameBoardBoss;
     private GameOverPanel gameOverPanel;
     private SelectionPj selectionPj;
@@ -39,6 +40,7 @@ public class GameFrame extends JFrame {
 
     // BOTONES
     private JButton startButton;
+    private JButton bossButton;
     private JButton menuPjBtn;
     private JButton menuHelpBtn;
     private JButton exitButton;
@@ -48,6 +50,8 @@ public class GameFrame extends JFrame {
     private Component rigidArea;
     private Component rigidArea_1;
     private Component rigidArea_2;
+    
+    public int opcionIniciar;
 
     private JButton[] buttons; // Array para los botones
     private int currentButtonIndex = 0; // Índice del botón actual
@@ -59,7 +63,7 @@ public class GameFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
 
-        ImageIcon icon = new ImageIcon(getClass().getResource("serpientearriba.png"));
+        ImageIcon icon = new ImageIcon(getClass().getResource("termoabajo.png"));
         setIconImage(icon.getImage());
 
         bgImage = new ImageIcon(getClass().getResource("snake-uy.png"));
@@ -83,7 +87,7 @@ public class GameFrame extends JFrame {
         mainMenuPanel.setLayout(new BorderLayout());
 
         //Version label
-        lblNewLabel = new JLabel("Ver. 0.90");
+        lblNewLabel = new JLabel("Ver. 1.00");
         lblNewLabel.setForeground(new Color(255, 255, 255));
         lblNewLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainMenuPanel.add(lblNewLabel, BorderLayout.NORTH);
@@ -111,12 +115,18 @@ public class GameFrame extends JFrame {
         buttonPanel.add(rigidArea_2);
 
         // Iniciar juego btn
-        startButton = new JButton("Iniciar juego");
+        startButton = new JButton("Modo Competitivo");
         startButton.setForeground(Color.WHITE);
         startButton.setBackground(new Color(24, 39, 71));
         startButton.setFont(new Font("Power Red and Blue", Font.BOLD, 20));
         startButton.addActionListener(e -> iniciarJuego());
-
+        
+        bossButton = new JButton("Modo Historia");
+        bossButton.setForeground(Color.WHITE);
+        bossButton.setBackground(new Color(120, 39, 71));
+        bossButton.setFont(new Font("Power Red and Blue", Font.BOLD, 20));
+        bossButton.addActionListener(e -> iniciarJuegoConJefe());
+        
         // Personajes Btn
         menuPjBtn = new JButton("Personajes");
         menuPjBtn.setForeground(new Color(0, 0, 0));
@@ -147,7 +157,7 @@ public class GameFrame extends JFrame {
         exitButton.addActionListener(e -> System.exit(0));
 
         // Configuración de botones
-        buttons = new JButton[]{startButton, menuPjBtn, menuHelpBtn, exitButton}; // Array de botones
+        buttons = new JButton[]{startButton, bossButton, menuPjBtn, menuHelpBtn, exitButton}; // Array de botones
         for (JButton button : buttons) {
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             buttonPanel.add(button);
@@ -165,8 +175,9 @@ public class GameFrame extends JFrame {
         mainMenuPanel.add(lblNewLabel_1, BorderLayout.SOUTH);
 
         gameBoard = new GameBoardSnake(cardLayout, contentPane);
+        gameBoss = new GameBoardWithBoss(cardLayout, contentPane);
         selectionPj = new SelectionPj(contentPane, null);
-        gameOverPanel = new GameOverPanel(cardLayout, contentPane);
+        gameOverPanel = new GameOverPanel(cardLayout, contentPane, this);
         helpPanel = new HelpPanel(contentPane);
         gameBoardBoss = new GameBoardBoss(cardLayout, contentPane);
         finalPanel = new FinalPanel(contentPane);
@@ -178,6 +189,7 @@ public class GameFrame extends JFrame {
         contentPane.add(helpPanel, "helpPanel");
         contentPane.add(gameBoardBoss, "gameBoardBoss");
         contentPane.add(finalPanel, "finalPanel");
+        contentPane.add(gameBoss, "gameBoardWithBoss");
         
         /*Component[] components = contentPane.getComponents();
     	for (int i = 0; i < components.length; i++) {
@@ -224,5 +236,18 @@ public class GameFrame extends JFrame {
         }
         gameBoard.startTimer();
         pack();
+        opcionIniciar = 1;
+    }
+    
+    private void iniciarJuegoConJefe() {
+        cardLayout.show(contentPane, "gameBoardWithBoss");
+        gameBoss.requestFocusInWindow();
+        gameBoss.setFocusable(true);
+        if (gameBoss.isTimerRunning()) {
+        	gameBoss.stopTimer();
+        }
+        gameBoss.startTimer();
+        pack();
+        opcionIniciar = 2;
     }
 }

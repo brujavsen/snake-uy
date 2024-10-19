@@ -12,20 +12,22 @@ public class CharacterSelection extends JButton {
     private static final long serialVersionUID = 1L;
     private JLabel msgLabel;
     private AnimalCharacter characterType;
+    private SelectionPj selectionPanel; // Añadido para referencia al panel de selección
 
-    public CharacterSelection(AnimalCharacter characterType, String buttonText, ImageIcon icon, JLabel msgLabel) {
+    public CharacterSelection(AnimalCharacter characterType, String buttonText, ImageIcon icon, JLabel msgLabel, SelectionPj selectionPanel) {
         super(buttonText);
         this.characterType = characterType; // Guardar el tipo de personaje
         this.msgLabel = msgLabel; // Guardar referencia al JLabel
+        this.selectionPanel = selectionPanel; // Guardar referencia al panel de selección
 
-        // propiedades del boton
+        // propiedades del botón
         setIcon(icon);
         setForeground(Color.WHITE);
         setBackground(new Color(0, 64, 0));
         setFont(new Font("Power Red and Blue", Font.PLAIN, 20));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // efecto de hover en boton
+        // efecto de hover en botón
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -38,7 +40,7 @@ public class CharacterSelection extends JButton {
             }
         });
 
-        // accion al dar click
+        // acción al dar clic
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 selectCharacter();
@@ -46,10 +48,13 @@ public class CharacterSelection extends JButton {
         });
     }
 
-    // Método para seleccionar el personaje
     private void selectCharacter() {
-        SelectionPj.setPersonajeSeleccionado(characterType);
-        msgLabel.setText("Seleccionado correctamente: " + characterType);
+        if (characterType != null) {
+            SelectionPj.setPersonajeSeleccionado(characterType);
+            msgLabel.setText("Seleccionado correctamente: " + characterType);
+        } else {
+            selectionPanel.mostrarMenuPrincipal();
+        }
     }
 
     public void highlight() {

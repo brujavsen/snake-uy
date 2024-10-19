@@ -8,7 +8,7 @@ public class Mate {
 	private int width = 600;
 	private int height = 600;
     private static final int PIXEL_SIZE = 30;
-    private ImageIcon mateImage;
+    protected ImageIcon mateImage;
     private int mateX;
     private int mateY;
     private Random random;

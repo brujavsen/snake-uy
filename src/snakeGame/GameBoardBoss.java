@@ -28,7 +28,7 @@ public class GameBoardBoss extends JPanel {
     private int height = 600;
     
     private boolean juegoPausado = false;
-    private boolean enCombate = false;
+    public boolean enCombate = false;
     
     private CardLayout cardLayout;
     private JPanel contentPane;
@@ -41,7 +41,7 @@ public class GameBoardBoss extends JPanel {
         hoyoNegro = new HoyoNegro();
         hoyoNegro2 = new HoyoNegro();
         bomb = new Bombs();
-        bgBoss = new ImageIcon(getClass().getResource("bg-boss.gif"));
+        bgBoss = new ImageIcon(getClass().getResource("bg-boss.png"));
         setPreferredSize(new Dimension(width, height));
         initializeComponents();
         setupKeyListener();
@@ -104,8 +104,8 @@ public class GameBoardBoss extends JPanel {
             repaint();
         } else {
             g.setColor(Color.WHITE);
-            g.setFont(new Font("Serif", Font.BOLD, 20));
-            g.drawString("Jefe Final. Presiona cualquier tecla para iniciar.", 50, height / 2);
+            g.setFont(new Font("Lato", Font.BOLD, 20));
+            g.drawString("Jefe Final. Presiona cualquier tecla para iniciar.", 50, height / 5);
         }
     }
     
@@ -159,4 +159,9 @@ public class GameBoardBoss extends JPanel {
     public Boss getBoss() {
     	return boss;
     }
+    
+    public void jefeDerrotado() {
+        boss.setVivo(false);
+    }
+
 }

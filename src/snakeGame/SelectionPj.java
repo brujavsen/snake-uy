@@ -1,21 +1,19 @@
 package snakeGame;
 
+// Importaciones necesarias
 import javax.swing.*;
-
 import snakeGame.SnakeMovement.AnimalCharacter;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class SelectionPj extends JPanel {
-
     private static final long serialVersionUID = 1L;
     private JLabel msgLabel;
     private ImageIcon bgImage;
     private JPanel contentPane;
+    private JPanel mainSelectPanel;
 
     public static AnimalCharacter personajeSeleccionado; // Variable estática
     private CharacterSelection[] buttons; // Array para los botones
@@ -42,10 +40,10 @@ public class SelectionPj extends JPanel {
         setPersonajeSeleccionado(defaultCharacter); // Establecer el personaje por defecto
 
         // Panel para las imágenes y botones
-        JPanel mainSelectPanel = new JPanel() {
-			private static final long serialVersionUID = 1L;
+        mainSelectPanel = new JPanel() {
+            private static final long serialVersionUID = 1L;
 
-			@Override
+            @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 if (bgImage != null) {
@@ -55,10 +53,10 @@ public class SelectionPj extends JPanel {
         };
 
         mainSelectPanel.setLayout(new BoxLayout(mainSelectPanel, BoxLayout.Y_AXIS));
-        
+
         Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
         mainSelectPanel.add(rigidArea_1);
-        
+
         JLabel tituloPj = new JLabel("Personajes");
         tituloPj.setForeground(new Color(255, 255, 255));
         tituloPj.setFont(new Font("Power Red and Blue", Font.BOLD, 29));
@@ -77,40 +75,8 @@ public class SelectionPj extends JPanel {
         msgLabel.setFont(new Font("Power Red and Blue", Font.PLAIN, 20));
         mainSelectPanel.add(msgLabel);
 
-        // Crear y agregar botones de personajes
-        // Espaciado
-        mainSelectPanel.add(Box.createRigidArea(new Dimension(20, 20)));
-
-        buttons = new CharacterSelection[]{
-            new CharacterSelection(AnimalCharacter.SERPIENTE, "Felipe", new ImageIcon(getClass().getResource("serpientearriba.png")), msgLabel),
-            new CharacterSelection(AnimalCharacter.CARPINCHO, "Joako", new ImageIcon(getClass().getResource("carpinchoabajo.png")), msgLabel),
-            new CharacterSelection(AnimalCharacter.TIBURON, "Tibu", new ImageIcon(getClass().getResource("tiburonder.png")), msgLabel),
-            new CharacterSelection(AnimalCharacter.GALLINA, "Kopeti", new ImageIcon(getClass().getResource("gallinaabajo.png")), msgLabel),
-            new CharacterSelection(AnimalCharacter.MOSCA, "Moska", new ImageIcon(getClass().getResource("moskaabajo.png")), msgLabel)
-        };
-
-        for (CharacterSelection button : buttons) {
-            mainSelectPanel.add(button);
-            mainSelectPanel.add(Box.createRigidArea(new Dimension(20, 20)));
-        }
-
-        // Botón para volver
-        JButton exitBtn = new JButton("Volver al Menú");
-        exitBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                CardLayout layout = (CardLayout) contentPane.getLayout();
-                layout.show(contentPane, "mainMenu");
-
-                GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
-                gameBoard.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
-            }
-        });
-
-        exitBtn.setBackground(new Color(32, 178, 170));
-        exitBtn.setForeground(new Color(0, 0, 0));
-        exitBtn.setFont(new Font("Power Red and Blue", Font.PLAIN, 20));
-        exitBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        mainSelectPanel.add(exitBtn);
+        // Crear lista temporal para los botones de personajes
+        crearBotones();
 
         // Agregar el panel principal al panel de selección
         add(mainSelectPanel, BorderLayout.CENTER);
@@ -120,6 +86,31 @@ public class SelectionPj extends JPanel {
         // Asegurarse de que el panel tenga el foco
         requestFocusInWindow();
     }
+
+    public void crearBotones() {
+        ArrayList<CharacterSelection> tempButtons = new ArrayList<>();
+        tempButtons.add(new CharacterSelection(AnimalCharacter.SERPIENTE, "Felipe", new ImageIcon(getClass().getResource("serpientearriba.png")), msgLabel, this));
+        tempButtons.add(new CharacterSelection(AnimalCharacter.CARPINCHO, "Joako", new ImageIcon(getClass().getResource("carpinchoabajo.png")), msgLabel, this));
+        tempButtons.add(new CharacterSelection(AnimalCharacter.TIBURON, "Tibu", new ImageIcon(getClass().getResource("tiburonder.png")), msgLabel, this));
+        tempButtons.add(new CharacterSelection(AnimalCharacter.GALLINA, "Kopeti", new ImageIcon(getClass().getResource("gallinaabajo.png")), msgLabel, this));
+        tempButtons.add(new CharacterSelection(AnimalCharacter.MOSCA, "Moska", new ImageIcon(getClass().getResource("moskaabajo.png")), msgLabel, this));
+        tempButtons.add(new CharacterSelection(AnimalCharacter.TERMO, "Termonaitor", new ImageIcon(getClass().getResource("termoabajo.png")), msgLabel, this));
+
+        // Agregar el botón "Volver al Menú" como un nuevo CharacterSelection
+        tempButtons.add(new CharacterSelection(null, "Volver al Menú", null, msgLabel, this));
+
+        buttons = tempButtons.toArray(new CharacterSelection[0]);
+
+        // Agregar botones al panel
+        for (CharacterSelection button : buttons) {
+            mainSelectPanel.add(button);
+            mainSelectPanel.add(Box.createRigidArea(new Dimension(20, 20)));
+        }
+
+        mainSelectPanel.revalidate(); // Revalida el panel
+        mainSelectPanel.repaint();
+    }
+
 
     private void setupKeyListener() {
         addKeyListener(new KeyAdapter() {
@@ -133,12 +124,8 @@ public class SelectionPj extends JPanel {
                     highlightCurrentButton();
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     buttons[currentButtonIndex].doClick(); // Simula un clic en el botón actual
-                } else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                	CardLayout layout = (CardLayout) contentPane.getLayout();
-                    layout.show(contentPane, "mainMenu");
-
-                    GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
-                    gameBoard.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    mostrarMenuPrincipal();
                 }
             }
         });
@@ -153,5 +140,13 @@ public class SelectionPj extends JPanel {
                 buttons[i].unhighlight(); // Quitar resaltado de otros botones
             }
         }
+    }
+
+    void mostrarMenuPrincipal() {
+        CardLayout layout = (CardLayout) contentPane.getLayout();
+        layout.show(contentPane, "mainMenu");
+
+        GameBoardSnake gameBoard = (GameBoardSnake) contentPane.getComponent(1);
+        gameBoard.reiniciarJuego(); // Reiniciar con el nuevo personaje seleccionado
     }
 }
