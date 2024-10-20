@@ -23,6 +23,10 @@ public class SnakeMovement {
     
     private int vidas = 4;
     
+    public boolean invulnerable;
+    private long invulnerableStartTime;
+    private static final int INVULNERABLE_DURATION = 5000;
+    
     private boolean growNext = false;
     private boolean gameOver = false; // Nuevo estado para verificar si el juego ha terminado
     private boolean hasMoved = true; //Cooldown de movimiento
@@ -46,6 +50,8 @@ public class SnakeMovement {
     	if (personajeSeleccionado == null) {
             throw new IllegalStateException("No hay un personaje seleccionado.");
         }
+    	
+    	this.invulnerable = false;
     	
     	switch (personajeSeleccionado) {
 	        case CARPINCHO:
@@ -133,18 +139,30 @@ public class SnakeMovement {
         Point head = snakeBody.get(0);
         Point newHead = (Point) head.clone();
         switch (direccionActual) {
-            case RIGHT:
-                newHead.x += cellSize;
-                break;
-            case LEFT:
-                newHead.x -= cellSize;
-                break;
-            case DOWN:
-                newHead.y += cellSize;
-                break;
-            case UP:
-                newHead.y -= cellSize;
-                break;
+	        case RIGHT:
+	            newHead.x += cellSize;
+	            if (newHead.x >= width) {
+	                newHead.x = 0;
+	            }
+	            break;
+	        case LEFT:
+	            newHead.x -= cellSize;
+	            if (newHead.x < 0) {
+	                newHead.x = width - cellSize;
+	            }
+	            break;
+	        case DOWN:
+	            newHead.y += cellSize;
+	            if (newHead.y >= height) {
+	                newHead.y = 0;
+	            }
+	            break;
+	        case UP:
+	            newHead.y -= cellSize;
+	            if (newHead.y < 0) {
+	                newHead.y = height - cellSize;
+	            }
+	            break;
         }
         snakeBody.add(0, newHead);
         if (growNext) {
@@ -170,6 +188,21 @@ public class SnakeMovement {
         for (int i = 1; i < snakeBody.size(); i++) {
             Point segment = snakeBody.get(i);
             g.drawImage(cuerpo.getImage(), segment.x, segment.y, cellSize, cellSize, null);
+        }
+    }
+    
+    public void activateInvulnerability() {
+        this.invulnerable = true;
+        this.invulnerableStartTime = System.currentTimeMillis();
+    }
+
+    public boolean isInvulnerable() {
+        // Si el tiempo actual - tiempo de inicio de invulnerabilidad es menor que la duración, sigue siendo invulnerable
+        if (invulnerable && (System.currentTimeMillis() - invulnerableStartTime < INVULNERABLE_DURATION)) {
+            return true;
+        } else {
+            invulnerable = false; // Desactivar invulnerabilidad si ha pasado el tiempo
+            return false;
         }
     }
 
@@ -198,17 +231,12 @@ public class SnakeMovement {
     }
 
     private boolean checkCollisions() {
-        return isWallCollision() || isSelfCollision();
-    }
-
-    private boolean isWallCollision() {
-        Point head = snakeBody.get(0);
-        return head.x < 0 || head.x >= width || head.y < 0 || head.y >= height;
+        return isSelfCollision();
     }
 
     private boolean isSelfCollision() {
         Point head = snakeBody.get(0);
-        return snakeBody.subList(1, snakeBody.size()).contains(head);
+        return !isInvulnerable() && snakeBody.subList(1, snakeBody.size()).contains(head);
     }
 
     public int tamanioSnake() {
@@ -237,6 +265,14 @@ public class SnakeMovement {
     
     public int getLives() {
         return vidas;
+    }
+    
+    public int getHeadX() {
+        return snakeBody.get(0).x;
+    }
+
+    public int getHeadY() {
+        return snakeBody.get(0).y;
     }
 
 }

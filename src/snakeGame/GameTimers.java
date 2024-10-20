@@ -10,17 +10,18 @@ import java.awt.event.ActionListener;
 public class GameTimers {
     protected Timer gameTimer;
     protected Timer respawnTimer;
-    protected Timer impulsoVelTimer;
+    protected Timer boostTimer;
     protected SnakeMovement snakeMovement;
     protected Mate mateNormal;
+    protected Mate mateArg;
     protected HoyoNegro hoyoNegro;
     protected GameBoardSnake gameBoard;
-    protected boolean impulsoActivo = false;
     protected MusicPlayer musicPlayer;
 
-    public GameTimers(SnakeMovement snakeMovement, Mate mateNormal, HoyoNegro hoyoNegro, GameBoardSnake gameBoardSnake) {
+    public GameTimers(SnakeMovement snakeMovement, Mate mateNormal, Mate mateArg, HoyoNegro hoyoNegro, GameBoardSnake gameBoardSnake) {
         this.snakeMovement = snakeMovement;
         this.mateNormal = mateNormal;
+        this.mateArg = mateArg;
         this.hoyoNegro = hoyoNegro;
         this.gameBoard = gameBoardSnake;
 
@@ -48,16 +49,28 @@ public class GameTimers {
 
                 snakeMovement.moveSnake(gameBoard, null);
 
-                // Handle the normal mate collection
                 if (snakeMovement.getHeadPosition().equals(new Point(mateNormal.getMateX(), mateNormal.getMateY()))) {
                     snakeMovement.grow();
                     mateNormal.updateMate();
+                    musicPlayer.playOneTime("mateSound.wav");
+                }
+                
+                if (snakeMovement.getHeadPosition().equals(new Point(mateArg.getMateX(), mateArg.getMateY()))) {
+                    if (mateArg.isDisponible()) {
+                        mateArg.recolectado(snakeMovement);
+                        musicPlayer.playOneTime("mateSound.wav");
+                    }
+                } else {
+                    if (!mateArg.isDisponible()) {
+                        mateArg.setActivo(false);
+                    }
                 }
 
                 if (snakeMovement.getHeadPosition().equals(new Point(hoyoNegro.getHoyoX(), hoyoNegro.getHoyoY()))) {
                     if (snakeMovement.tamanioSnake() > 1) {
                         snakeMovement.removeSnakeBody();
                     }
+                    musicPlayer.playOneTime("hoyoSound.wav");
                 }
 
                 gameBoard.repaint();
@@ -69,6 +82,10 @@ public class GameTimers {
             public void actionPerformed(ActionEvent e) {
                 if (hoyoNegro != null && !gameBoard.getJuegoPausado()) {
                     hoyoNegro.updateHoyo();
+                }
+                
+                if (mateArg != null && !gameBoard.getJuegoPausado()) {
+                    mateArg.updateMate();
                 }
             }
         });
@@ -111,9 +128,6 @@ public class GameTimers {
         if (gameTimer != null && gameTimer.isRunning()) {
             gameTimer.stop();
             musicPlayer.stopMusic();
-        }
-        if (impulsoVelTimer != null && impulsoVelTimer.isRunning()) {
-            impulsoVelTimer.stop();
         }
     }
 

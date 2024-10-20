@@ -14,6 +14,8 @@ public class Mate {
     private Random random;
     private boolean activo; // Estado del mate
     private boolean[][] grid = new boolean[width][height];
+    public boolean disponible = true;
+    private Timer respawnTimer;
 
     public Mate(String tipoMate) {
         // Cargar la imagen del mate
@@ -64,6 +66,32 @@ public class Mate {
         activo = estado; // Cambia el estado del mate
     }
 
+    //Recolectar mate argentino da invulnerabilidad
+    public void recolectado(SnakeMovement snakeMovement) {
+        if (disponible) {
+            disponible = false;
+            snakeMovement.activateInvulnerability();
+            startRespawnTimer();
+        }
+    }
+
+    private void startRespawnTimer() {
+        if (respawnTimer != null && respawnTimer.isRunning()) {
+            respawnTimer.stop();
+        }
+        respawnTimer = new Timer(10000, e -> {
+            disponible = true;
+            placeMate();
+            respawnTimer.stop();
+        });
+        respawnTimer.setRepeats(false);
+        respawnTimer.start();
+    }
+
+    public boolean isDisponible() {
+        return disponible;
+    }
+    
     public boolean isActivo() {
         return activo; // Devuelve el estado del mate
     }

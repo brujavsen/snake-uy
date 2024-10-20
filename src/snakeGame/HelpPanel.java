@@ -28,7 +28,7 @@ public class HelpPanel extends JPanel {
     private String[] helpTexts = {
         "El hoyo negro te hara perder uno a uno los mates tomados",
         "El mate te hará crecer",
-        "El mate Argentino te dará velocidad",
+        "El mate Argentino te hará invulnerable durante 5s",
         "Te mueves con las flechas de dirección o si prefieres 'AWSD'"
     };
     private JButton exitBtn; // Botón declarado como atributo de clase

@@ -55,6 +55,8 @@ public class GameFrame extends JFrame {
 
     private JButton[] buttons; // Array para los botones
     private int currentButtonIndex = 0; // Índice del botón actual
+    private JLabel toolTipLabel;
+    private Component rigidArea_3;
 
     public GameFrame() {
         setTitle("Animal Snake");
@@ -87,7 +89,7 @@ public class GameFrame extends JFrame {
         mainMenuPanel.setLayout(new BorderLayout());
 
         //Version label
-        lblNewLabel = new JLabel("Ver. 1.00");
+        lblNewLabel = new JLabel("Ver. 1.10");
         lblNewLabel.setForeground(new Color(255, 255, 255));
         lblNewLabel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainMenuPanel.add(lblNewLabel, BorderLayout.NORTH);
@@ -98,7 +100,7 @@ public class GameFrame extends JFrame {
         buttonPanel.setBackground(new Color(255, 255, 255));
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
-        rigidArea = Box.createRigidArea(new Dimension(15, 100));
+        rigidArea = Box.createRigidArea(new Dimension(15, 80));
         buttonPanel.add(rigidArea);
 
         // Título
@@ -110,12 +112,22 @@ public class GameFrame extends JFrame {
         titleGame.setFont(new Font("Power Clear", Font.BOLD, 60));
         buttonPanel.add(titleGame);
         buttonPanel.setBackground(new Color(0, 0, 0, 0));
+        
+        rigidArea_3 = Box.createRigidArea(new Dimension(20, 50));
+        buttonPanel.add(rigidArea_3);
+        
+        toolTipLabel = new JLabel("");
+        toolTipLabel.setFont(new Font("Lato", Font.ITALIC, 18));
+        toolTipLabel.setForeground(new Color(255, 255, 255));
+        toolTipLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        toolTipLabel.setPreferredSize(new Dimension(400, 30));
+        buttonPanel.add(toolTipLabel);
 
-        rigidArea_2 = Box.createRigidArea(new Dimension(20, 50));
+        rigidArea_2 = Box.createRigidArea(new Dimension(20, 30));
         buttonPanel.add(rigidArea_2);
 
         // Iniciar juego btn
-        startButton = new JButton("Modo Competitivo");
+        startButton = new JButton("Modo Libre");
         startButton.setForeground(Color.WHITE);
         startButton.setBackground(new Color(24, 39, 71));
         startButton.setFont(new Font("Power Red and Blue", Font.BOLD, 20));
@@ -224,9 +236,24 @@ public class GameFrame extends JFrame {
     private void resaltarBotonSeleccionado() {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setForeground(i == currentButtonIndex ? Color.YELLOW : Color.WHITE);
-        }
+        } 
+
+        toolTipLabel.setText(obtenerTextoTooltip(currentButtonIndex));
+        this.repaint();
+        this.revalidate();
     }
 
+    private String obtenerTextoTooltip(int buttonIndex) {
+        switch (buttonIndex) {
+            case 0: return "Juega libremente para conseguir el puntaje más alto";
+            case 1: return "Juega el modo historia para luchar contra el jefe final";
+            case 2: return "Selecciona un personaje, cada personaje tiene su estilo diferente";
+            case 3: return "¿Una ayuda rápida antes de jugar?";
+            case 4: return "¿Ya te vas?";
+            default: return "";
+        }
+    }
+    
     private void iniciarJuego() {
         cardLayout.show(contentPane, "gameBoard");
         gameBoard.requestFocusInWindow();

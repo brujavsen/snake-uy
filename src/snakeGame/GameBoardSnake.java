@@ -12,9 +12,10 @@ public class GameBoardSnake extends JPanel {
 	
 	protected SnakeMovement snakeMovement;
 	protected Mate mateNormal;
+	protected Mate mateArg;
 	protected HoyoNegro hoyoNegro;
 	protected GameTimers gameTimers;
-    
+	
     protected ImageIcon[] bgImages;
     
     protected int width = 600;
@@ -30,7 +31,7 @@ public class GameBoardSnake extends JPanel {
     public GameBoardSnake(CardLayout cardLayout, JPanel contentPane) {
     	this.contentPane = contentPane;
     	this.cardLayout = cardLayout;
-
+    	
     	initializeComponents();
         setupKeyListener();
         setPreferredSize(new Dimension(width, height));
@@ -39,14 +40,15 @@ public class GameBoardSnake extends JPanel {
     protected void initializeComponents() {
         // Verificar si hay un personaje seleccionado antes de crear SnakeMovement
         if (!SelectionPj.personajeSeleccionado()) {
-            SelectionPj.setPersonajeSeleccionado(AnimalCharacter.CARPINCHO); // Establecer la serpiente como personaje predeterminado
+            SelectionPj.setPersonajeSeleccionado(AnimalCharacter.CARPINCHO);
         }
 
         // Crear SnakeMovement con el personaje seleccionado
         snakeMovement = new SnakeMovement(SelectionPj.obtenerPersonajeSeleccionado());
         hoyoNegro = new HoyoNegro();
         mateNormal = new Mate("mt-mate.png");
-        gameTimers = new GameTimers(snakeMovement, mateNormal, hoyoNegro, this);
+        mateArg = new Mate("mateArg.png");
+        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this);
         
         // Cargar imágenes de ayuda
         bgImages = new ImageIcon[]{
@@ -80,7 +82,10 @@ public class GameBoardSnake extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
     	drawBoard(g); // Dibuja el fondo
-    	mateNormal.drawMate(g); // Dibuja el mate que hace crecer la serpiente
+    	mateNormal.drawMate(g); // Dibuja el mate
+    	if (mateArg.isActivo()) {
+            mateArg.drawMate(g); // Dibuja el mate solo si está activo
+        }
     	if (snakeMovement.tamanioSnake() > 1) {
             hoyoNegro.drawHoyo(g);
         }
@@ -89,6 +94,7 @@ public class GameBoardSnake extends JPanel {
     		pausarJuego(g);
     	}
     	puntajeJuego(g);
+    	tiempoInvulnerable(g);
         //drawGrid(g);
     }
     
@@ -109,9 +115,25 @@ public class GameBoardSnake extends JPanel {
     }
     
     protected void puntajeJuego(Graphics g) {
-        g.setColor(Color.white);
-        g.setFont(new Font("Serif", Font.BOLD, 20));
-        g.drawString("Score: " + snakeMovement.tamanioSnake(), 24 - 16, 24);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+
+        g2d.setColor(Color.white);
+        g2d.setFont(new Font("Lato", Font.BOLD, 20));
+        g2d.drawString("Score: " + snakeMovement.tamanioSnake(), 24 - 16, 24);
+
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f)); // Restablecer la opacidad
+    }
+
+    protected void tiempoInvulnerable(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f)); // Ajustar la opacidad
+
+        g2d.setColor(Color.white);
+        g2d.setFont(new Font("Lato", Font.BOLD, 20));
+        g2d.drawString("Invulnerable: " + (snakeMovement.invulnerable ? "Si" : "No"), 455 - 16, 24);
+
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
     
     protected void pausarJuego(Graphics g) {
@@ -122,29 +144,34 @@ public class GameBoardSnake extends JPanel {
     }
     
     public void reiniciarJuego() {
-        stopTimer(); // Detén el temporizador actual
+        stopTimer(); // Detener el temporizador actual
         // Verificar si hay un personaje seleccionado antes de crear SnakeMovement
         if (!SelectionPj.personajeSeleccionado()) {
-            SelectionPj.setPersonajeSeleccionado(AnimalCharacter.CARPINCHO); // Establecer la serpiente como personaje predeterminado
+            SelectionPj.setPersonajeSeleccionado(AnimalCharacter.CARPINCHO); // Establecer carpincho como personaje predeterminado
         }
         snakeMovement = new SnakeMovement(SelectionPj.obtenerPersonajeSeleccionado());
         mateNormal = new Mate("mt-mate.png");
+        mateArg = new Mate("mateArg.png");
         hoyoNegro = new HoyoNegro();
-        gameTimers = new GameTimers(snakeMovement, mateNormal, hoyoNegro, this); // Reinicia los temporizadores
-        setupKeyListener(); // Asegúrate de que el panel tenga el KeyListener
+        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this); // Reinicia los temporizadores
+        setupKeyListener(); // Asegurar de que el panel tenga el KeyListener
         repaint(); // Redibuja el tablero para mostrar el estado inicial
     }
 
     public void startTimer() {
-        gameTimers.startGameTimer();
+    	if (gameTimers != null) {
+    		gameTimers.startGameTimer();
+        }
     }
 
     public void stopTimer() {
-        gameTimers.stopGameTimer();
+    	if (gameTimers != null) {
+            gameTimers.stopGameTimer();
+        }
     }
 
     public boolean isTimerRunning() {
-        return gameTimers.isGameTimerRunning();
+    	return gameTimers != null && gameTimers.isGameTimerRunning();
     }
     
     public void actualizarPuntaje(int puntaje) {
@@ -154,6 +181,10 @@ public class GameBoardSnake extends JPanel {
     
     public boolean getJuegoPausado() {
     	return juegoPausado;
+    }
+    
+    public SnakeMovement getSnakeMovement() {
+        return snakeMovement; // Permite acceder a snakeMovement
     }
 
     
