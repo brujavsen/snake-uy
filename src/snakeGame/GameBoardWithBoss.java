@@ -19,9 +19,10 @@ public class GameBoardWithBoss extends GameBoardSnake {
     protected GameBoardBoss gameBoardBoss;
     protected ImageIcon[] bgImages;
     private int matesJefeFinal = 100;
+    private MusicPlayer musicPlayer;
 
-    public GameBoardWithBoss(CardLayout cardLayout, JPanel contentPane) {
-        super(cardLayout, contentPane);
+    public GameBoardWithBoss(CardLayout cardLayout, JPanel contentPane, MusicPlayer musicPlayer) {
+        super(cardLayout, contentPane, musicPlayer);
         super.initializeComponents();
         super.setupKeyListener();
     }
@@ -32,13 +33,13 @@ public class GameBoardWithBoss extends GameBoardSnake {
             SelectionPj.setPersonajeSeleccionado(AnimalCharacter.CARPINCHO);
         }
         snakeMovement = new SnakeMovement(SelectionPj.obtenerPersonajeSeleccionado());
-        gameBoardBoss = new GameBoardBoss(cardLayout, contentPane);
+        gameBoardBoss = new GameBoardBoss(cardLayout, contentPane, musicPlayer);
         hoyoNegro2 = new HoyoNegro();
         mateNormal = new Mate("mt-mate.png");
         bomb = new Bombs();
         boss = new Boss();
         gameTimers = null;
-        gameTimersBoss = new GameTimersBoss(snakeMovement, hoyoNegro, hoyoNegro2, bomb, gameBoardBoss, cardLayout, contentPane);
+        gameTimersBoss = new GameTimersBoss(snakeMovement, hoyoNegro, hoyoNegro2, bomb, gameBoardBoss, cardLayout, contentPane, musicPlayer);
     }
 
     @Override

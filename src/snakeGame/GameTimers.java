@@ -18,15 +18,15 @@ public class GameTimers {
     protected GameBoardSnake gameBoard;
     protected MusicPlayer musicPlayer;
 
-    public GameTimers(SnakeMovement snakeMovement, Mate mateNormal, Mate mateArg, HoyoNegro hoyoNegro, GameBoardSnake gameBoardSnake) {
+    public GameTimers(SnakeMovement snakeMovement, Mate mateNormal, Mate mateArg, HoyoNegro hoyoNegro, GameBoardSnake gameBoardSnake, MusicPlayer musicPlayer) {
         this.snakeMovement = snakeMovement;
         this.mateNormal = mateNormal;
         this.mateArg = mateArg;
         this.hoyoNegro = hoyoNegro;
         this.gameBoard = gameBoardSnake;
-
+        this.musicPlayer = musicPlayer;
+        
         setupTimers();
-        musicPlayer = new MusicPlayer();
     }
 
     protected void setupTimers() {

@@ -24,7 +24,7 @@ public class GameTimersBoss {
     private CardLayout cardLayout;
     private JPanel contentPane;
     
-    public GameTimersBoss(SnakeMovement snakeMovement, HoyoNegro hoyoNegro, HoyoNegro hoyoNegro2, Bombs bomb, GameBoardBoss gameBoardBoss, CardLayout cardLayout, JPanel contentPane) {
+    public GameTimersBoss(SnakeMovement snakeMovement, HoyoNegro hoyoNegro, HoyoNegro hoyoNegro2, Bombs bomb, GameBoardBoss gameBoardBoss, CardLayout cardLayout, JPanel contentPane, MusicPlayer musicPlayer) {
         this.snakeMovement = snakeMovement;
         this.hoyoNegro = hoyoNegro;
         this.hoyoNegro2 = hoyoNegro2;
@@ -32,11 +32,11 @@ public class GameTimersBoss {
         this.gameBoardBoss = gameBoardBoss;
         this.cardLayout = cardLayout;
         this.contentPane = contentPane;
+        this.musicPlayer = musicPlayer;
         
         setupTimers();
         
         this.boss = gameBoardBoss.getBoss();
-    	musicPlayer = new MusicPlayer();
     }
     
 	private void setupTimers() {

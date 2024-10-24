@@ -23,14 +23,16 @@ public class GameBoardSnake extends JPanel {
     //private int cellSize = 30;
     
     protected boolean juegoPausado = false;
+    protected MusicPlayer musicPlayer;
     
     protected JPanel contentPane;
     protected CardLayout cardLayout;
     protected int opcionIniciar;
     
-    public GameBoardSnake(CardLayout cardLayout, JPanel contentPane) {
+    public GameBoardSnake(CardLayout cardLayout, JPanel contentPane, MusicPlayer musicPlayer) {
     	this.contentPane = contentPane;
     	this.cardLayout = cardLayout;
+    	this.musicPlayer = musicPlayer;
     	
     	initializeComponents();
         setupKeyListener();
@@ -48,7 +50,7 @@ public class GameBoardSnake extends JPanel {
         hoyoNegro = new HoyoNegro();
         mateNormal = new Mate("mt-mate.png");
         mateArg = new Mate("mateArg.png");
-        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this);
+        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this, musicPlayer);
         
         // Cargar imágenes de ayuda
         bgImages = new ImageIcon[]{
@@ -153,7 +155,7 @@ public class GameBoardSnake extends JPanel {
         mateNormal = new Mate("mt-mate.png");
         mateArg = new Mate("mateArg.png");
         hoyoNegro = new HoyoNegro();
-        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this); // Reinicia los temporizadores
+        gameTimers = new GameTimers(snakeMovement, mateNormal, mateArg, hoyoNegro, this, musicPlayer); // Reinicia los temporizadores
         setupKeyListener(); // Asegurar de que el panel tenga el KeyListener
         repaint(); // Redibuja el tablero para mostrar el estado inicial
     }

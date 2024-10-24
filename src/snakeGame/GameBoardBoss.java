@@ -23,6 +23,7 @@ public class GameBoardBoss extends JPanel {
     private Bombs bomb;
     private Boss boss;
     private ImageIcon bgBoss;
+    private MusicPlayer musicPlayer;
     
     private int width = 600;
     private int height = 600;
@@ -33,9 +34,10 @@ public class GameBoardBoss extends JPanel {
     private CardLayout cardLayout;
     private JPanel contentPane;
     
-    public GameBoardBoss(CardLayout cardLayout, JPanel contentPane) {
+    public GameBoardBoss(CardLayout cardLayout, JPanel contentPane, MusicPlayer musicPlayer) {
         this.contentPane = contentPane;
         this.cardLayout = cardLayout;
+        this.musicPlayer = musicPlayer;
         
         boss = new Boss();
         hoyoNegro = new HoyoNegro();
@@ -60,7 +62,7 @@ public class GameBoardBoss extends JPanel {
     
     private void snakeMoveYGameTimers() {
         snakeMovement = new SnakeMovement(SelectionPj.obtenerPersonajeSeleccionado());
-        gameTimers = new GameTimersBoss(snakeMovement, hoyoNegro, hoyoNegro2, bomb, this, cardLayout, contentPane);
+        gameTimers = new GameTimersBoss(snakeMovement, hoyoNegro, hoyoNegro2, bomb, this, cardLayout, contentPane, musicPlayer);
     }
 
     private void setupKeyListener() {

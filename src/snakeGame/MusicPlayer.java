@@ -9,6 +9,7 @@ import java.io.InputStream;
 public class MusicPlayer {
     private Clip clip;
     private Clip clipOne;
+    private boolean isActivo = false;
 
     public void playMusic(String musicFile) {
         try {
@@ -25,7 +26,11 @@ public class MusicPlayer {
             clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.loop(Clip.LOOP_CONTINUOUSLY); // Reproduce en bucle
-            clip.start();
+            if(getIsActivo() == false) {
+            	clip.stop();
+            } else {
+            	clip.start();
+            }
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -62,5 +67,14 @@ public class MusicPlayer {
         if (clip != null && clip.isRunning()) {
             clip.stop();
         }
+    }
+    
+    public boolean setIsActivo(boolean estado) {
+    	isActivo = estado;
+    	return estado;
+    }
+    
+    public boolean getIsActivo() {
+    	return isActivo;
     }
 }

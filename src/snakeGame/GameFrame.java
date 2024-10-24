@@ -42,6 +42,7 @@ public class GameFrame extends JFrame {
     private JButton startButton;
     private JButton bossButton;
     private JButton menuPjBtn;
+    private JButton musicBtn;
     private JButton menuHelpBtn;
     private JButton exitButton;
     private JLabel lblNewLabel;
@@ -50,20 +51,25 @@ public class GameFrame extends JFrame {
     private Component rigidArea;
     private Component rigidArea_1;
     private Component rigidArea_2;
+    private Component rigidArea_3;
     
     public int opcionIniciar;
 
     private JButton[] buttons; // Array para los botones
     private int currentButtonIndex = 0; // Índice del botón actual
     private JLabel toolTipLabel;
-    private Component rigidArea_3;
-
+    private MusicPlayer musicPlayer;
+    
     public GameFrame() {
         setTitle("Animal Snake");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(width, height);
         setLocationRelativeTo(null);
         setResizable(false);
+        
+        musicPlayer = new MusicPlayer();
+        
+        musicPlayer.setIsActivo(false);
 
         ImageIcon icon = new ImageIcon(getClass().getResource("termoabajo.png"));
         setIconImage(icon.getImage());
@@ -150,6 +156,19 @@ public class GameFrame extends JFrame {
             selectionPj.requestFocusInWindow(); // Solicitar foco al panel de selección
         });
         
+        // Personajes Btn
+        musicBtn = new JButton("Música");
+        musicBtn.setForeground(new Color(0, 0, 0));
+        musicBtn.setBackground(new Color(0, 155, 66));
+        musicBtn.setFont(new Font("Power Red and Blue", Font.BOLD, 20));
+        musicBtn.addActionListener(e -> {
+        	if(musicPlayer.getIsActivo() == false) {
+        		musicPlayer.setIsActivo(true);
+        	} else {
+        		musicPlayer.setIsActivo(false);
+        	}
+        });
+        
         // Panel de ayuda Btn
         menuHelpBtn = new JButton("Cómo Jugar");
         menuHelpBtn.setForeground(new Color(0, 0, 0));
@@ -169,7 +188,7 @@ public class GameFrame extends JFrame {
         exitButton.addActionListener(e -> System.exit(0));
 
         // Configuración de botones
-        buttons = new JButton[]{startButton, bossButton, menuPjBtn, menuHelpBtn, exitButton}; // Array de botones
+        buttons = new JButton[]{startButton, bossButton, menuPjBtn, musicBtn, menuHelpBtn, exitButton}; // Array de botones
         for (JButton button : buttons) {
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             buttonPanel.add(button);
@@ -186,12 +205,12 @@ public class GameFrame extends JFrame {
         lblNewLabel_1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainMenuPanel.add(lblNewLabel_1, BorderLayout.SOUTH);
 
-        gameBoard = new GameBoardSnake(cardLayout, contentPane);
-        gameBoss = new GameBoardWithBoss(cardLayout, contentPane);
+        gameBoard = new GameBoardSnake(cardLayout, contentPane, musicPlayer);
+        gameBoss = new GameBoardWithBoss(cardLayout, contentPane, musicPlayer);
         selectionPj = new SelectionPj(contentPane, null);
         gameOverPanel = new GameOverPanel(cardLayout, contentPane, this);
         helpPanel = new HelpPanel(contentPane);
-        gameBoardBoss = new GameBoardBoss(cardLayout, contentPane);
+        gameBoardBoss = new GameBoardBoss(cardLayout, contentPane, musicPlayer);
         finalPanel = new FinalPanel(contentPane);
         
         contentPane.add(mainMenuPanel, "mainMenu");
@@ -248,8 +267,9 @@ public class GameFrame extends JFrame {
             case 0: return "Juega libremente para conseguir el puntaje más alto";
             case 1: return "Juega el modo historia para luchar contra el jefe final";
             case 2: return "Selecciona un personaje, cada personaje tiene su estilo diferente";
-            case 3: return "¿Una ayuda rápida antes de jugar?";
-            case 4: return "¿Ya te vas?";
+            case 3: return "Musíca activada: " + musicPlayer.getIsActivo();
+            case 4: return "¿Una ayuda rápida antes de jugar?";
+            case 5: return "¿Ya te vas?";
             default: return "";
         }
     }
